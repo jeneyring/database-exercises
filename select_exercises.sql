@@ -71,3 +71,11 @@ WHERE
 SELECT name, genre, artist
 FROM albums
 WHERE genre LIKE '%Rock%';
+
+#something cool found my fellow classmate:
+SELECT
+    name, genre 
+FROM
+    albums
+WHERE
+    FIND_IN_SET('rock', `genre`);
