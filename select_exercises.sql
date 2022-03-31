@@ -51,22 +51,12 @@ WHERE name = "Sgt. Pepper's Lonely Hearts Club Band";
  SELECT name 
  FROM albums
  WHERE sales < 20.0;
- -- answer: # 'Grease: The Original Soundtrack from the Motion Picture'
-'Bad'
-'Sgt. Pepper\'s Lonely Hearts Club Band'
-'Dirty Dancing'
-'Let\'s Talk About Love'
-'Dangerous'
-'The Immaculate Collection'
-'Abbey Road'
-'Born in the U.S.A.'
-'Brothers in Arms'
-'Titanic: Music from the Motion Picture'
-'Nevermind'
-'The Wall'
+ -- answer: # 'Grease: The Original Soundtrack from the Motion Picture','Bad','Sgt. Pepper\'s Lonely Hearts Club Band','Dirty Dancing','Let\'s Talk About Love','Dangerous','The Immaculate Collection','Abbey Road','Born in the U.S.A.','Brothers in Arms','Titanic: Music from the Motion Picture','Nevermind','The Wall'
 
 #All the albums with a genre of "Rock". 
 #Why do these query results not include albums 
 ## with a genre of "Hard rock" or "Progressive rock"?
 
- 
+ SELECT name, genre
+ FROM albums
+ WHERE genre = "Rock";
