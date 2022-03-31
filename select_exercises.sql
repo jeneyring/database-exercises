@@ -4,10 +4,12 @@ SELECT *
 FROM albums;
 
 #How many rows are in albums table?
---   32
+SELECT COUNT(*) 
+FROM albums;
+--   31
 
 #How many unique artist names are in the albums table?
-SELECT DISTINCT artist 
+SELECT COUNT(DISTINCT artist)
 FROM albums; 
 -- 23 unique artists
 
@@ -20,6 +22,7 @@ DESCRIBE albums;
 SELECT min(release_date)
 FROM albums;
 -- oldest is 1967
+
 SELECT max(release_date)
 FROM albums;
 -- most recent is 2011
@@ -42,9 +45,13 @@ WHERE name = "Sgt. Pepper's Lonely Hearts Club Band";
  -- answer: Grunge, Alternative rock
  
  #Which albums were released in the 1990s?
- SELECT name 
- FROM albums 
- WHERE release_date > 1989;
+ SELECT 
+    name
+FROM
+    albums
+WHERE
+    release_date >= 1990
+        AND release_date < 2000;
  -- answer: 'The Bodyguard,'Jagged Little Pill','Come On Over','Falling into You','21','Let\'s Talk About Love','1','Dangerous','The Immaculate Collection','Titanic: Music from the Motion Picture','Metallica','Nevermind','Supernatural'
 
  #Which albums had less than 20 million certified sales?
@@ -60,3 +67,7 @@ WHERE name = "Sgt. Pepper's Lonely Hearts Club Band";
  SELECT name, genre
  FROM albums
  WHERE genre = "Rock";
+
+SELECT name, genre, artist
+FROM albums
+WHERE genre LIKE '%Rock%';
