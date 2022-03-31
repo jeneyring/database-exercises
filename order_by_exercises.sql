@@ -109,6 +109,3 @@ ORDER BY birth_date ASC, hire_date DESC;
 -- # 362 employees returned
 -- # oldest & hired last: Khun Bernini
 -- # youngest & hired first: Douadi Pettis
-
-
--- 
