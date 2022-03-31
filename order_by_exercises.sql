@@ -19,9 +19,7 @@ ORDER BY last_name DESC, first_name ASC;
 
 SELECT *
 FROM employees
-WHERE first_name = 'Irena'
-	OR first_name = 'Vidya'
-    OR first_name = 'Maya'
+WHERE first_name IN ('Irena', 'Vidya','Maya')
 ORDER BY first_name;
 
 -- In your comments, answer: What was the first and last name in the first row of the results? 
@@ -35,9 +33,7 @@ ORDER BY first_name;
 
 SELECT first_name, last_name
 FROM employees
-WHERE first_name = 'Irena'
-	OR first_name = 'Vidya'
-    OR first_name = 'Maya'
+WHERE first_name IN ('Irena','Vidya','Maya')
 ORDER BY first_name, last_name;
 
 -- In your comments, answer: What was the first and last name in the first row of the results? 
@@ -50,9 +46,7 @@ ORDER BY first_name, last_name;
 -- 4) Find all employees with first names 'Irena', 'Vidya', or 'Maya', and order your results returned by last name and then first name. 
 SELECT last_name,first_name
 FROM employees
-WHERE first_name = 'Irena'
-	OR first_name = 'Vidya'
-    OR first_name = 'Maya'
+WHERE first_name IN ('Irena','Vidya','Maya')
 ORDER BY last_name, first_name;
 
 -- In your comments, answer: What was the first and last name in the first row of the results? 
@@ -68,7 +62,7 @@ ORDER BY last_name, first_name;
  SELECT emp_no, first_name, last_name
  FROM employees
  WHERE last_name LIKE 'E%E'
- ORDER BY emp_no;
+ ORDER BY emp_no DESC;
  
  -- Enter a comment with the number of employees returned, the first employee number and their first and last name, and the last employee number with their first and last name.
 -- # 899 employees returned
@@ -103,7 +97,7 @@ SELECT *
 FROM employees
 WHERE hire_date LIKE '199%'
 AND birth_date LIKE '____-12-25'
-ORDER BY birth_date ASC, hire_date DESC;
+ORDER BY birth_date, hire_date DESC;
 
 -- Enter a comment with the number of employees returned, the name of the oldest employee who was hired last, and the name of the youngest employee who was hired first.
 -- # 362 employees returned
