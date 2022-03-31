@@ -1,4 +1,6 @@
 USE employees;
+SELECT database();
+SHOW tables;
 
 SELECT DISTINCT title FROM titles;
 
@@ -6,7 +8,8 @@ SELECT DISTINCT title FROM titles;
 
 SELECT DISTINCT last_name
 FROM employees
-ORDER BY last_name LIMIT 10;
+ORDER BY last_name DESC
+LIMIT 10;
 
 
 -- 3) Find all previous or current employees hired in the 90s and born on Christmas. 
