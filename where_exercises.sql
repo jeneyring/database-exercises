@@ -18,18 +18,9 @@ WHERE first_name IN ('Irena', 'Vidya','Maya');
 
 SELECT COUNT(first_name)
 FROM employees
-WHERE first_name = 'Irena' OR 'Vidya' OR 'Maya';
+WHERE first_name = 'Irena' OR first_name = 'Vidya' OR first_name = 'Maya';
 
--- 241 records returned  
-
-#vs. 
-
-SELECT COUNT(first_name)
-FROM employees
-WHERE first_name = 'Irena' OR  first_name= 'Vidya' OR first_name= 'Maya';
-
--- 709 records returned 
-
+-- 709 records returned  
 
 
 #4) Find all current or previous employees with first names 'Irena', 'Vidya', or 'Maya', using OR, and who is male. 
@@ -76,24 +67,37 @@ SELECT
 FROM
     employees
 WHERE
-    (last_name LIKE '%E'
-        AND last_name != 'E%');
+    last_name LIKE '%E'
+        AND NOT last_name LIKE 'E%';
 
--- 24,292 records returned
+-- 23,393 records returned
 
 # 7) Find all current or previous employees whose last name starts and ends with 'E'. 
 ## Enter a comment with the number of employees whose last name starts and ends with E. 
-## How many employees' last names end with E, regardless of whether they start with E? 
+ 
 
 SELECT 
     COUNT(last_name)
 FROM
     employees
 WHERE
-    (last_name LIKE '%E'
-        AND last_name LIKE 'E%');
+    last_name LIKE '%E'
+        AND last_name LIKE 'E%';
 
 --  899 records returned
+
+#or...
+
+SELECT 
+    COUNT(last_name)
+FROM
+    employees
+WHERE
+    last_name LIKE 'E%E';
+    
+--  899 records still returns
+        
+## How many employees' last names end with E, regardless of whether they start with E?
 
 SELECT 
     COUNT(last_name)
@@ -109,10 +113,16 @@ WHERE
  
  SELECT COUNT(*)
  FROM employees 
- WHERE hire_date >= 1990
- OR hire_date <= 1999;
+ WHERE hire_date >= '1990-01-01'
+ AND hire_date <= '1999-12-31';
  
- -- 300,024 records returned
+ #or simplify as...
+ 
+ SELECT COUNT(*)
+ FROM employees
+ WHERE hire_date LIKE '199%';
+ 
+ -- 135,214 records returned
  
  # 9) Find all current or previous employees born on Christmas. 
  ## Enter a comment with the number of employees returned.
@@ -128,11 +138,11 @@ WHERE
  
  SELECT COUNT(*)
  FROM employees 
- WHERE (hire_date >= 1990
- OR hire_date <= 1999)
+ WHERE (hire_date >= '1990-01-01'
+ AND hire_date <= '1999-12-31')
  AND birth_date LIKE '%-12-25';
  
- -- 842 records returned
+ -- 362 records returned
  
  # 11) Find all current or previous employees with a 'q' in their last name. 
  ## Enter a comment with the number of records returned.
@@ -157,7 +167,7 @@ FROM
     employees
 WHERE
     last_name LIKE '%q%' 
-AND last_name NOT LIKE '%qu%';
+AND NOT last_name LIKE '%qu%';
 
 -- 547 records returned  
 
