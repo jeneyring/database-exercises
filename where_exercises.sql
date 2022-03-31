@@ -81,6 +81,83 @@ WHERE
 
 -- 24,292 records returned
 
- 
+# 7) Find all current or previous employees whose last name starts and ends with 'E'. 
+## Enter a comment with the number of employees whose last name starts and ends with E. 
+## How many employees' last names end with E, regardless of whether they start with E? 
 
+SELECT 
+    COUNT(last_name)
+FROM
+    employees
+WHERE
+    (last_name LIKE '%E'
+        AND last_name LIKE 'E%');
+
+--  899 records returned
+
+SELECT 
+    COUNT(last_name)
+FROM
+    employees
+WHERE
+    last_name LIKE '%E';
+
+-- 24,292 records returned 
+ 
+ # 8) Find all current or previous employees hired in the 90s. 
+ ## Enter a comment with the number of employees returned.
+ 
+ SELECT COUNT(*)
+ FROM employees 
+ WHERE hire_date >= 1990
+ OR hire_date <= 1999;
+ 
+ -- 300,024 records returned
+ 
+ # 9) Find all current or previous employees born on Christmas. 
+ ## Enter a comment with the number of employees returned.
+ 
+ SELECT COUNT(*)
+ FROM employees
+ WHERE birth_date LIKE '%-12-25';
+ 
+ -- 842 records returned
+ 
+ # 10) Find all current or previous employees hired in the 90s and born on Christmas. 
+ ## Enter a comment with the number of employees returned.
+ 
+ SELECT COUNT(*)
+ FROM employees 
+ WHERE (hire_date >= 1990
+ OR hire_date <= 1999)
+ AND birth_date LIKE '%-12-25';
+ 
+ -- 842 records returned
+ 
+ # 11) Find all current or previous employees with a 'q' in their last name. 
+ ## Enter a comment with the number of records returned.
+ 
+ SELECT 
+    COUNT(last_name)
+FROM
+    employees
+WHERE
+    last_name LIKE '%q%';
+    
+-- 1,873 records returned 
+
+
+
+# 12) Find all current or previous employees with a 'q' in their last name but not 'qu'. 
+## How many employees are found?
+
+ SELECT 
+    COUNT(last_name)
+FROM
+    employees
+WHERE
+    last_name LIKE '%q%' 
+AND last_name NOT LIKE '%qu%';
+
+-- 547 records returned  
 
