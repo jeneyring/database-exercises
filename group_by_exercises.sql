@@ -107,7 +107,9 @@ HAVING count_of_users > 1;
 
 -- BONUS: How many duplicate usernames are there?
 
-SELECT 
+SELECT SUM(t.count_of_users) as 'total_duplicates',
+count(t.count_of_users) as 'number_of_unique_duplicates'
+FROM (SELECT 
 	LOWER(
 			CONCAT(
 				SUBSTR(first_name, 1, 1),
@@ -120,4 +122,37 @@ SELECT
             count(*) as count_of_users
 FROM employees
 group by username
-HAVING count_of_users > 1;
+HAVING count_of_users > 1) AS t;
+
+
+-- OR.....
+SELECT 
+	LOWER(
+			CONCAT(
+				SUBSTR(first_name, 1, 1),
+				SUBSTR(last_name, 1, 4),
+				'_',
+				SUBSTR(birth_date, 6, 2),
+				SUBSTR(birth_date, 3, 2)
+				)
+			) AS username,
+            count(*) as count_of_users, sum(count(*)) OVER () 
+FROM employees
+group by username
+having count_of_users > 1;
+
+-- ***ANSWER: 27,403 total_duplicates;....? 13,251 number_of_unique_duplicates***..? Q: what are unique_duplicates in this case?
+
+-- 9) Determine the historic average salary for each employee. 
+-- When you hear, read, or think "for each" with regard to SQL, you'll probably be grouping by that exact column.
+
+SELECT AVG(salary), emp_no
+FROM salaries
+GROUP BY emp_no;
+
+-- Using the dept_emp table, count how many current employees work in each department. 
+-- The query result should show 9 rows, one for each department and the employee count.
+
+
+
+

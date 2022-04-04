@@ -21,11 +21,12 @@ AND birth_date LIKE '____-12-25';
 
 -- Find the first 5 employees hired in the 90's by sorting by hire date and limiting your results to the first 5 records. 
 
-SELECT first_name, last_name
+SELECT first_name, last_name, hire_date, birth_date
 FROM employees
 WHERE hire_date LIKE '199%'
 AND birth_date LIKE '____-12-25'
-ORDER BY hire_date LIMIT 5;
+ORDER BY hire_date ASC
+LIMIT 5;
 
 -- Write a comment in your code that lists the five names of the employees returned.
 -- 'Alselm','Cappello','Utz','Mandell'
@@ -38,6 +39,9 @@ ORDER BY hire_date LIMIT 5;
 -- The five after that would be your second page, etc. 
 -- Update the query to find the tenth page of results.
 
-SELECT *
+SELECT first_name, last_name, hire_date, birth_date
 FROM employees
-LIMIT 5 OFFSET 50;
+WHERE hire_date LIKE '199%'
+AND birth_date LIKE '____-12-25'
+ORDER BY hire_date
+LIMIT 5 OFFSET 45;
