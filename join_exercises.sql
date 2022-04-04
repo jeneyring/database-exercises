@@ -58,10 +58,12 @@ JOIN departments
   
 -- 4) Find the current titles of employees currently working in the Customer Service department.
 
-SELECT CONCAT(first_name, ' ', last_name) AS name, titles.title
+SELECT title.title, COUNT(*) 
 FROM employees
-JOIN titles
-ON employees.emp_no = titles.emp_no
-JOIN departments;
+JOIN titles as title
+ON title.emp_no = employees.emp_no
+JOIN dept_emp
+ON dept_emp.emp_no = title.emp_no
+WHERE title.to_date LIKE '9999%' AND dept_emp.to_date LIKE '9999%' AND dept_no = 'd009'
+GROUP BY title.title;
 
-USE departments;
