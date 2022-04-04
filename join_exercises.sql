@@ -174,6 +174,15 @@ LIMIT 1;
 
 
 -- 9) Which current department manager has the highest salary?
+SELECT *
+FROM dept_manager;
+
+SELECT *
+FROM salaries;
+
+SELECT *
+FROM departments;
+
 
 -- 10)Determine the average salary for each department. Use all salary information and round your results.
 
