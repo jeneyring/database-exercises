@@ -76,6 +76,7 @@ and s.to_date > NOW();
 
 -- 6) How many current salaries are within 1 standard deviation of the current highest salary? 
 -- (Hint: you can use a built in function to calculate the standard deviation.) 
+
 SELECT MAX(salary) - STDDEV(salary) FROM salaries
 WHERE to_date > NOW();
 
@@ -100,16 +101,23 @@ FROM salaries; #standard deviation of salary
 -- BONUS::::::
 --  Find all the department names that currently have female managers.
 
-SELECT
-d.dept_name AS 'Department',
-	CONCAT(e.first_name, " ", e.last_name) AS 'Manager'
-FROM employees AS e
-JOIN departments AS d ON (d.dept_no = e.emp_no)
-JOIN dept_emp AS de ON (de.emp_no = e.emp_no)
-WHERE emp_no IN (SELECT emp_no
-FROM dept_manager
-WHERE to_date > now()
-AND gender = 'F');
+SELECT 
+    CONCAT(e.first_name, ' ', e.last_name) AS name,
+    gender,
+    d.dept_name AS department
+FROM
+    employees AS e
+        JOIN
+    dept_emp AS de ON de.emp_no = e.emp_no
+        JOIN
+    departments AS d ON d.dept_no = de.dept_no
+WHERE
+    e.emp_no IN (SELECT 
+            dept_manager.emp_no
+        FROM
+            dept_manager
+        WHERE
+            to_date > NOW() AND gender = 'F');
 
 
 -- Find the first and last name of the employee with the highest salary.
