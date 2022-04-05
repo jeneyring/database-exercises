@@ -39,7 +39,8 @@ SELECT COUNT(last_name) AS Past_Employees
 FROM employees
 WHERE emp_no NOT IN (SELECT emp_no
 FROM dept_emp
-WHERE to_date > NOW());#now write the outside query where it selects all of the employees who are NOT in the above list. 
+WHERE to_date > NOW());
+#now write the outside query where it selects all of the employees who are NOT in the above list. 
 
 
 
@@ -82,7 +83,7 @@ WHERE to_date > NOW();
 
 use employees;
 
-SELECT COUNT(*),
+SELECT COUNT(*) AS 'Salaries in STDDEV',
 COUNT(*) / (SELECT COUNT(*) FROM salaries WHERE to_date > NOW()) * 100
 FROM salaries
 WHERE to_date >  NOW() AND salary > (SELECT MAX(salary) - STDDEV(salary) FROM salaries
@@ -100,7 +101,14 @@ FROM salaries; #standard deviation of salary
 
 -- BONUS::::::
 --  Find all the department names that currently have female managers.
-
+-- SUBQUERY
+USE employees;
+SELECT 
+		dept_manager.emp_no
+        FROM dept_manager
+JOIN employees USING (emp_no)
+        WHERE to_date > NOW() AND employees.gender = 'F';
+-- Attach to full query....
 SELECT 
     CONCAT(e.first_name, ' ', e.last_name) AS name,
     gender,
@@ -112,17 +120,24 @@ FROM
         JOIN
     departments AS d ON d.dept_no = de.dept_no
 WHERE
-    e.emp_no IN (SELECT 
-            dept_manager.emp_no
-        FROM
-            dept_manager
+    e.emp_no IN 
+    (SELECT dept_manager.emp_no
+        FROM dept_manager
         WHERE
             to_date > NOW() AND gender = 'F');
 
 
 -- Find the first and last name of the employee with the highest salary.
 
+-- EMPLOYEE WITH HIGHEST SALARY::
+SELECT MAX(salary) FROM salaries
+WHERE to_date > NOW();
 
+SELECT first_name, last_name, salary
+FROM employees 
+JOIN salaries ON (salaries.emp_no = employees.emp_no)
+WHERE salary = (SELECT MAX(salary) FROM salaries
+WHERE to_date > NOW());
 
 
 
