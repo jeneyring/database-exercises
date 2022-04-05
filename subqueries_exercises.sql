@@ -89,8 +89,22 @@ FROM salaries; #standard deviation of salary
 
 -- What percentage of all salaries is this?
 
--- 7) 
+-- BONUS::::::
+--  Find all the department names that currently have female managers.
 
+SELECT
+d.dept_name AS 'Department',
+	CONCAT(e.first_name, " ", e.last_name) AS 'Manager'
+FROM employees AS e
+JOIN departments AS d ON (d.dept_no = e.emp_no)
+JOIN dept_emp AS de ON (de.emp_no = e.emp_no)
+WHERE emp_no IN (SELECT emp_no
+FROM dept_manager
+WHERE to_date > now()
+AND gender = 'F');
+
+
+-- Find the first and last name of the employee with the highest salary.
 
 
 
