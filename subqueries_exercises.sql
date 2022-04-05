@@ -76,12 +76,20 @@ and s.to_date > NOW();
 
 -- 6) How many current salaries are within 1 standard deviation of the current highest salary? 
 -- (Hint: you can use a built in function to calculate the standard deviation.) 
-SELECT COUNT(salary)
+SELECT MAX(salary) - STDDEV(salary) FROM salaries
+WHERE to_date > NOW();
+
+use employees;
+
+SELECT COUNT(*),
+COUNT(*) / (SELECT COUNT(*) FROM salaries WHERE to_date > NOW()) * 100
 FROM salaries
-JOIN employees ON employees.emp_no = salaries.emp_no
-WHERE salary IN(SELECT max(salary) FROM salaries)
-AND salary IN (SELECT STDDEV(salary) FROM salaries)
-	AND salaries.to_date > NOW();
+WHERE to_date >  NOW() AND salary > (SELECT MAX(salary) - STDDEV(salary) FROM salaries
+WHERE to_date > NOW());
+
+
+
+
 
 
 SELECT STDDEV(salary)
