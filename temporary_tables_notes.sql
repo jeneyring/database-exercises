@@ -55,3 +55,26 @@ SELECT *
 FROM employees
 JOIN salaries USING(emp_no) -- by using USING we collapse same name columns
 LIMIT 20;
+
+CREATE TEMPORARY TABLE example1 as
+SELECT employees.emp_no as emp_no1, first_name, last_name, salaries.emp_no as emp_no2
+FROM employees
+JOIN salaries ON salaries.emp_no = employees.emp_no;
+
+SELECT *
+FROM example1;
+
+ALTER TABLE example1 DROP COLUMN emp_no1; #drop specific columns from the tables.
+ALTER TABLE example1 DROP COLUMN emp_no2;
+
+SELECT *
+FROM example1;
+
+ALTER TABLE example1 ADD email VARCHAR(100);#creating a new column/place holder
+
+SELECT * from example1;
+
+UPDATE example1
+SET email = CONCAT(first_name, ' ', last_name, "@fancy_co.com"); #to update a column...
+
+SELECT * FROM example1; #to check and see the new update.
