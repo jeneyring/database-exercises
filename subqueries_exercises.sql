@@ -9,7 +9,9 @@ FROM employees
 
 SELECT first_name, last_name, hire_date
 FROM employees
-WHERE hire_date = (SELECT hire_date
+JOIN dept_emp USING (emp_no)
+WHERE to_date > now()
+AND hire_date = (SELECT hire_date
 FROM employees 
 	WHERE emp_no LIKE '%101010%') 
     ;
@@ -78,6 +80,28 @@ and s.to_date > NOW();
 -- 6) How many current salaries are within 1 standard deviation of the current highest salary? 
 -- (Hint: you can use a built in function to calculate the standard deviation.) 
 
+-- WHAT is MAX salary?
+SELECT max(salary) from salaries where to_date > now();
+
+-- what is 1 stddev fro current salary?
+SELECT stddev(salary) from salaries where to_date > now();
+
+SELECT count(*) from salaries
+where to_date > now()
+and salary > (SELECT max(salary) from salaries where to_date > now())
+- (SELECT stddev(salary) from salaries where to_date > now());
+
+#What percentage??
+# count (numerator) / count of overall (denominator) * 100
+
+SELECT count(*) FROM salaries
+where to_date > now (); #numerator syntax
+
+SELECT. #denominator syntax
+
+#look at posted syntax in CodeupClassroom...
+
+#OR......
 SELECT MAX(salary) - STDDEV(salary) FROM salaries
 WHERE to_date > NOW();
 
@@ -130,6 +154,8 @@ WHERE
 -- Find the first and last name of the employee with the highest salary.
 
 -- EMPLOYEE WITH HIGHEST SALARY::
+USE employees;
+
 SELECT MAX(salary) FROM salaries
 WHERE to_date > NOW();
 
