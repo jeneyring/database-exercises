@@ -77,7 +77,33 @@ FROM jemison_1756.sakila_payments;
 #to the overall, historical average pay. 
 ##In order to make the comparison easier, you should use the Z-score for salaries. 
 
-CREATE TEMPORARY TABLE 
+USE jemison_1756;
+
+CREATE TEMPORARY TABLE jemison_1756.average_table AS
+SELECT d.dept_name, AVG(s.salary)AS historical_avg
+FROM employees.employees
+	JOIN employees.dept_emp AS de USING(emp_no)
+	JOIN employees.salaries AS s USING(emp_no)
+	JOIN employees.departments AS d USING(dept_no)
+GROUP BY d.dept_name;
+
+ALTER TABLE jemison_1756.average_table MODIFY historical_average INT;
+ALTER TABLE jemison_1756.average_table ADD current_average INT;
+
+UPDATE jemison_1756.average_table
+SET current_average = (select avg(salary) FROM employees.salaries WHERE to_date > now());
+
+
+SELECT * from jemison_1756.average_table;
+
+USE employees;
+SELECT emp_no, AVG(salary) AS 'current_avg'
+FROM salaries
+WHERE to_date > now()
+GROUP BY emp_no
+;
+
+SELECT emp_no, AV
 
 
 #In terms of salary, what is the best department right now to work for? The worst?
