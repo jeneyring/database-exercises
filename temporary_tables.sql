@@ -89,12 +89,15 @@ GROUP BY d.dept_name;
 
 ALTER TABLE jemison_1756.average_table MODIFY historical_average INT;
 ALTER TABLE jemison_1756.average_table ADD current_average INT;
+ALTER TABLE jemison_1756.average_table ADD current_dept_average INT;
 
 UPDATE jemison_1756.average_table
 SET current_average = (select avg(salary) FROM employees.salaries WHERE to_date > now());
 
+DROP 
 
 SELECT * from jemison_1756.average_table;
+
 
 USE employees;
 SELECT emp_no, AVG(salary) AS 'current_avg'
