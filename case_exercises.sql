@@ -7,6 +7,7 @@ SELECT
 	emp_no,
     dept_no,
     from_date,
+    to_date,
     IF (to_date = '9999-01-01', True, False) AS is_current_employee
 FROM dept_emp;
 
@@ -21,21 +22,22 @@ SELECT
 	first_name,
     last_name,
     CASE
-    WHEN SUBSTR(last_name, 1) BETWEEN 'A' AND 'H' THEN 'A-H'
-    WHEN SUBSTR(last_name, 1) BETWEEN 'I' AND 'Q' THEN 'I-Q'
+    WHEN SUBSTR(last_name, 1) BETWEEN 'A' AND 'I' THEN 'A-H'
+    WHEN SUBSTR(last_name, 1) BETWEEN 'I' AND 'R' THEN 'I-Q'
     WHEN SUBSTR(last_name, 1) BETWEEN 'R' AND 'Z' THEN 'R-Z'
+    ELSE 'R-Z'
 END AS alpha_group
 FROM employees;
 
 -- 3) How many employees (current or previous) were born in each decade?
 
 SELECT 
-    COUNT(CASE WHEN birth_date LIKE '195%' THEN 1950 ELSE NULL END) AS 'Fifties',
-    COUNT(CASE WHEN birth_date LIKE '196%' THEN 1960 ELSE NULL END) AS 'Sixties',
-    COUNT(CASE WHEN birth_date LIKE '197%' THEN 1970 ELSE NULL END) AS 'Seventies',
-    COUNT(CASE WHEN birth_date LIKE '198%' THEN 1980 ELSE NULL END) AS 'Eighties'
+    COUNT(CASE WHEN birth_date LIKE '195%' THEN birth_date ELSE NULL END) AS 'Fifties',
+    COUNT(CASE WHEN birth_date LIKE '196%' THEN birth_date ELSE NULL END) AS 'Sixties',
+    COUNT(CASE WHEN birth_date LIKE '197%' THEN birth_date ELSE NULL END) AS 'Seventies',
+    COUNT(CASE WHEN birth_date LIKE '198%' THEN birth_date ELSE NULL END) AS 'Eighties'
 FROM employees;
-
+#don't need GROUP BY for aggregator since data is only one row.
 
 #OR 
 
@@ -50,17 +52,37 @@ SELECT CASE
 END AS 'decade_born', COUNT(*) AS decade_count
 FROM employees
 GROUP BY decade_born;
+
+#OR
+
+SELECT
+	CONCAT(SUBSTR(birth_date,1,3),'0') as decade,
+    COUNT(*)
+FROM employees
+GROUP BY decade;
+#grabbing first 3 digits, adding a '0' and then counting it.
 	
 -- 4) What is the current average salary for each of the following department groups: 
 #R&D, Sales & Marketing, Prod & QM, Finance & HR, Customer Service?
 
-SELECT AVG(s.salary), d.dept_name
-FROM salaries AS s
-JOIN departments AS d USING(emp_no)
-GROUP BY dept_name;
+select dept_name,dept_no,count(emp_no) as CountStaff, avg(SALARY) as AVGSalary 
+from departments
+JOIN dept_emp USING(dept_no)
+JOIN salaries USING(emp_no)
+group by dept_name;
 
+/*SELECT
+	CASE
+		WHEN d.dept_name IN ('Research', 'Development') THEN 'R&D'
+        WHEN d.dept_name IN ('...
 
-
+END AS dept_group,
+AVG(s.salary) AS avg_salary
+FROM departments d
+JOIN dept_emp (dept_no)
+JOIN salaries(emp_no)
+WERE s.to_date > NOW() AND de.to_date > now()
+GROUP BY dept_group; */
 
 
 
