@@ -37,7 +37,27 @@ SELECT
 FROM employees;
 
 
--- 4) 
+#OR 
+
+SELECT CASE
+	WHEN YEAR(birth_date) BETWEEN 1940 AND 1949 THEN '1940s'
+    WHEN YEAR(birth_date) BETWEEN 1950 AND 1959 THEN '1950s'
+    WHEN YEAR(birth_date) BETWEEN 1960 AND 1969 THEN '1960s'
+    WHEN YEAR(birth_date) BETWEEN 1970 AND 1979 THEN '1970s'
+    WHEN YEAR(birth_date) BETWEEN 1980 AND 1989 THEN '1980s'
+    WHEN YEAR(birth_date) BETWEEN 1990 AND 1999 THEN '1990s'
+    ELSE 'too young'
+END AS 'decade_born', COUNT(*) AS decade_count
+FROM employees
+GROUP BY decade_born;
+	
+-- 4) What is the current average salary for each of the following department groups: 
+#R&D, Sales & Marketing, Prod & QM, Finance & HR, Customer Service?
+
+SELECT AVG(s.salary), d.dept_name
+FROM salaries AS s
+JOIN departments AS d USING(emp_no)
+GROUP BY dept_name;
 
 
 
