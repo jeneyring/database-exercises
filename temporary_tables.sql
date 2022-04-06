@@ -77,16 +77,65 @@ FROM jemison_1756.sakila_payments;
 #to the overall, historical average pay. 
 ##In order to make the comparison easier, you should use the Z-score for salaries. 
 
-CREATE TEMPORARY TABLE jemison_1756.employees_payments AS
-SELECT de.dept_name, 
-	CONCAT(e.first_name, ' ', last_name),
-    s.salary
-JOIN departments AS de ON (de.emp_no = e.emp_no)
-LIMIT 100;
+CREATE TEMPORARY TABLE 
+
 
 #In terms of salary, what is the best department right now to work for? The worst?
 
 
+/*NOTES TO HELP SOLVE:::::*/
+USE employees;
+
+-- show current salary for employees
+select emp_no, salary
+from salaries
+where to_date > now()
+limit 10;
+
+-- 72012
+
+select avg(salary), max(salary), min(salary), std(salary)
+from salaries
+where to_date > now ()
+limit 10;
+
+-- Let's create a temp table of the above
+CREATE TEMPORARY TABLE jemison_1756.salary_info AS
+select emp_no, salary
+from salaries
+where to_date > now()
+limit 10;
+
+SELECT * FROM jemison_1756.salary_info;
+-- If I need avg those are single #s.
+
+ALTER TABLE jemison_1756.salary_info ADD avg_salary INT;
+ALTER TABLE jemison_1756.salary_info ADD min_salary INT;
+ALTER TABLE jemison_1756.salary_info ADD max_salary INT;
+
+UPDATE jemison_1756.salary_info
+SET avg_salary = (select avg(salary) FROM salaries WHERE to_date > now());
+
+SELECT * FROM jemison_1756.salary_info2;
+
+CREATE TEMPORARY TABLE jemison_1756.salary_info2 AS
+SELECT emp_no, salary > avg_salary as "greater", salary, avg_salary
+FROM jemison_1756.salary_info;
 
 
+SELECT sum(greater) from jemison_1756.salary_info2;
 
+SELECT abs(salary - avg_salary) as diff
+FROM jemison_1756.salary_info2;
+
+alter table jemison_1756.salary_info2 add diff INT;
+
+update jemison_1756.salary_info2
+set diff = abs(salary-avg_salary);
+
+select * from jemison_1756.salary_info2 order by greater desc, diff desc;
+
+-- join to find names of employees....
+select * from jemison_1756.salary_info2
+JOIN employees using(emp_no)
+order by greater desc, diff desc;
