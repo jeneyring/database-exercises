@@ -15,7 +15,9 @@ LIMIT 100;
 #It should be a VARCHAR whose length is the sum of the lengths of the 
 #first name and last name columns.
 
-ALTER TABLE employees_with_departments ADD full_name VARCHAR(100);
+ALTER TABLE employees_with_departments ADD full_name VARCHAR(31);
+
+describe employees_with_departments; #shows that first_name is varchar(14) and last_name is (16). add in the space between too when adding up characters.
 
 
 -- # b) Update the table so that full name column contains the correct data
@@ -94,7 +96,7 @@ ALTER TABLE jemison_1756.average_table ADD current_dept_average INT;
 UPDATE jemison_1756.average_table
 SET current_average = (select avg(salary) FROM employees.salaries WHERE to_date > now());
 
-DROP 
+
 
 SELECT * from jemison_1756.average_table;
 
@@ -106,10 +108,52 @@ WHERE to_date > now()
 GROUP BY emp_no
 ;
 
-SELECT emp_no, AV
+-- class example:
+SELECT AVG(salary), std(salary) from employees.salaries;  
+-- 63,810
+-- 16,904
 
+CREATE TEMPORARY TABLE jemison_1756.historic_aggregates AS(
+	SELECT AVG(salary) AS avg_salary, std(salary) AS std_salary
+    FROM employees.salaries
+    );
 
+-- Let's check by each department.
+
+SELECT dept_name, AVG(salary) as department_current_average
+from employees.salaries
+join employees.dept_emp using(emp_no)
+join employees.departments using(dept_no)
+where employees.dept_emp.to_date > now()
+and employees.salaries.to_date > now()
+group by dept_name;
+
+CREATE TEMPORARY TABLE jemison_1756.current_info as(
+SELECT dept_name, AVG(salary) as department_current_average
+from employees.salaries
+	join employees.dept_emp using(emp_no)
+	join employees.departments using(dept_no)
+where employees.dept_emp.to_date > now()
+	and employees.salaries.to_date > now()
+group by dept_name);
+
+SELECT * 
+FROM current_info;
+
+-- add on all columns what we will need:
+alter table current_info add historic_avg float(10,2);
+alter table current_info add historic_std float(10,2);
+alter table current_info add zscore float(10,2);
+
+update current_info set historic_avg = (select avg_salary from jemison_1756.historic_aggregates);
 #In terms of salary, what is the best department right now to work for? The worst?
+
+update current_info set historic_std = (select std_salary from jemison_1756.historic_aggregates);
+
+update current_info set zscore = (department_current_average - historic_avg) / historic_std;
+
+SELECT *
+FROM current_info;
 
 
 /*NOTES TO HELP SOLVE:::::*/
