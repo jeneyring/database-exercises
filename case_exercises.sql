@@ -91,11 +91,3 @@ GROUP BY dept_group;
 
 
 
---  3) How many employees (current or previous) were born in each decade?
-
-
-
---  4) What is the current average salary for each of the following department groups:
-# R&D, Sales & Marketing, Prod & QM, Finance & HR, Customer Service?
-
-
