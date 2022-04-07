@@ -66,4 +66,4 @@ FROM salaries;
 
 SELECT avg(salary)
 FROM salaries
-WHERE gender IS 'F';
+WHERE gender = 'F';
