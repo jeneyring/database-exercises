@@ -71,18 +71,23 @@ JOIN dept_emp USING(dept_no)
 JOIN salaries USING(emp_no)
 group by dept_name;
 
-/*SELECT
+SELECT *
+FROM departments;
+
+SELECT
 	CASE
 		WHEN d.dept_name IN ('Research', 'Development') THEN 'R&D'
-        WHEN d.dept_name IN ('...
-
+        WHEN d.dept_name IN ('Sale', 'Marketing') THEN 'Sales & Marketing'
+        WHEN d.dept_name IN ('Production', 'Quality Management') THEN 'Prod & QM'
+        WHEN d.dept_name IN ('Finance', 'Human Resources') THEN 'Finance & HR'
+        WHEN d.dept_name IN ('Customer Service') THEN 'Customer Service'
 END AS dept_group,
 AVG(s.salary) AS avg_salary
 FROM departments d
-JOIN dept_emp (dept_no)
-JOIN salaries(emp_no)
-WERE s.to_date > NOW() AND de.to_date > now()
-GROUP BY dept_group; */
+JOIN dept_emp AS de USING(dept_no)
+JOIN salaries AS s USING(emp_no)
+WHERE s.to_date > NOW() AND de.to_date > now()
+GROUP BY dept_group; 
 
 
 
